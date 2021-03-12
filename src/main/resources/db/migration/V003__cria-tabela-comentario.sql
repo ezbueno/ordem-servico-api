@@ -4,6 +4,6 @@ CREATE TABLE IF NOT EXISTS comentario(
 	descricao TEXT NOT NULL,
 	data_envio DATETIME NOT NULL,
 	
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
 	CONSTRAINT fk_comentario_ordem_servico FOREIGN KEY (ordem_servico_id) REFERENCES ordem_servico (id) 
 );
