@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.ezandro.ordemservico.api.exception.NegocioException;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,5 +45,22 @@ public class OrdemServico {
 	
 	@OneToMany(mappedBy = "ordemServico")
 	private List<Comentario> comentarios = new ArrayList<>();
+	
+	public boolean podeSerFinalizada() {
+		return StatusOrdemServico.ABERTA.equals(getStatus());
+	}
+	
+	public boolean naoPodeSerFinalizada() {
+		return !podeSerFinalizada();
+	}
+
+	public void finalizar() {
+		if(naoPodeSerFinalizada()) {
+			throw new NegocioException("Ordem de Serviço não pode ser finalizada!");
+		}
+		
+		setStatus(StatusOrdemServico.FINALIZADA);
+		setDataFinalizacao(OffsetDateTime.now());
+	}
 	
 }
