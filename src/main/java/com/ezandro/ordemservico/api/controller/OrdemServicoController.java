@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ezandro.ordemservico.api.dto.OrdemServicoDTO;
+import com.ezandro.ordemservico.api.dto.OrdemServicoInputDTO;
 import com.ezandro.ordemservico.api.entity.OrdemServico;
 import com.ezandro.ordemservico.api.repository.OrdemServicoRepository;
 import com.ezandro.ordemservico.api.service.OrdemServicoService;
@@ -38,7 +39,8 @@ public class OrdemServicoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrdemServico criar(@Valid @RequestBody OrdemServico ordemServico) {
+	public OrdemServico criar(@Valid @RequestBody OrdemServicoInputDTO ordemServicoInputDTO) {
+		OrdemServico ordemServico = toEntity(ordemServicoInputDTO);
 		return ordemServicoService.criar(ordemServico);
 	}
 	
@@ -65,5 +67,9 @@ public class OrdemServicoController {
 	
 	private List<OrdemServicoDTO> toCollectionDto(List<OrdemServico> ordemServico) {
 		return ordemServico.stream().map(os -> toModel(os)).collect(Collectors.toList());
+	}
+	
+	private OrdemServico toEntity(OrdemServicoInputDTO ordemServicoInputDTO) {
+		return modelMapper.map(ordemServicoInputDTO, OrdemServico.class);
 	}
 }
