@@ -1,18 +1,12 @@
 package com.ezandro.ordemservico.api.entity;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class OrdemServico {
+public class Comentario {
 	
 	@EqualsAndHashCode.Include
 	@Id
@@ -30,18 +24,8 @@ public class OrdemServico {
 	private Long id;
 	
 	@ManyToOne
-	private Cliente cliente;
+	private OrdemServico ordemServico;
 	
 	private String descricao;
-	private BigDecimal preco;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusOrdemServico status;
-	
-	private OffsetDateTime dataAbertura;
-	private OffsetDateTime dataFinalizacao;
-	
-	@OneToMany(mappedBy = "ordemServico")
-	private List<Comentario> comentarios = new ArrayList<>();
-	
+	private OffsetDateTime dataEnvio;
 }
