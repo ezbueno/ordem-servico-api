@@ -63,4 +63,21 @@ public class OrdemServico {
 		setDataFinalizacao(OffsetDateTime.now());
 	}
 	
+	public boolean podeSerCancelada() {
+		return StatusOrdemServico.ABERTA.equals(getStatus());
+	}
+	
+	public boolean naoPodeSerCancelada() {
+		return !podeSerCancelada();
+	}
+
+	public void cancelar() {
+		if(naoPodeSerCancelada()) {
+			throw new NegocioException("Ordem de Serviço não pode ser cancelada!");
+		}
+		
+		setStatus(StatusOrdemServico.CANCELADA);
+		setDataFinalizacao(OffsetDateTime.now());
+	}
+	
 }
