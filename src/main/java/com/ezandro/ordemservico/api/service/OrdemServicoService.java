@@ -9,6 +9,7 @@ import com.ezandro.ordemservico.api.entity.Cliente;
 import com.ezandro.ordemservico.api.entity.Comentario;
 import com.ezandro.ordemservico.api.entity.OrdemServico;
 import com.ezandro.ordemservico.api.entity.StatusOrdemServico;
+import com.ezandro.ordemservico.api.exception.EntidadeNaoEncontradaException;
 import com.ezandro.ordemservico.api.exception.NegocioException;
 import com.ezandro.ordemservico.api.repository.ClienteRepository;
 import com.ezandro.ordemservico.api.repository.ComentarioRepository;
@@ -38,8 +39,7 @@ public class OrdemServicoService {
 	}
 	
 	public Comentario adicionarComentario(Long ordemServicoId, String descricao) {
-		OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
-				.orElseThrow(() -> new NegocioException("Ordem de Serviço não encontrada!"));
+		OrdemServico ordemServico = buscar(ordemServicoId);
 		
 		Comentario comentario = new Comentario();
 		comentario.setDataEnvio(OffsetDateTime.now());
@@ -47,5 +47,18 @@ public class OrdemServicoService {
 		comentario.setOrdemServico(ordemServico);
 		
 		return comentarioRepository.save(comentario);
+	}
+	
+	public void finalizar(Long ordemServicoId) {
+		OrdemServico ordemServico = buscar(ordemServicoId);
+		
+		ordemServico.finalizar();
+		
+		ordemServicoRepository.save(ordemServico);
+	}
+
+	private OrdemServico buscar(Long ordemServicoId) {
+		return ordemServicoRepository.findById(ordemServicoId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException("Ordem de Serviço não encontrada!"));
 	}
 }
