@@ -61,4 +61,13 @@ public class OrdemServicoService {
 		return ordemServicoRepository.findById(ordemServicoId)
 				.orElseThrow(() -> new EntidadeNaoEncontradaException("Ordem de Serviço não encontrada!"));
 	}
+
+	public void cancelar(Long ordemServicoId) {
+		OrdemServico ordemServico = buscar(ordemServicoId);
+		
+		ordemServico.cancelar();
+		
+		ordemServicoRepository.save(ordemServico);
+		
+	}
 }
