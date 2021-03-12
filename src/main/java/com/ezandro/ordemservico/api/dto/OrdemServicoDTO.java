@@ -13,7 +13,7 @@ import lombok.Setter;
 public class OrdemServicoDTO {
 	
 	private Long id;
-	private String nomeCliente;
+	private ClienteResumoDTO cliente;
 	private String descricao;
 	private BigDecimal preco;
 	private StatusOrdemServico status;
